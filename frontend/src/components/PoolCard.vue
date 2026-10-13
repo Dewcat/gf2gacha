@@ -136,7 +136,7 @@ const layoutStore = useLayoutStore()
       <div class="w-full text-sm text-purple-600">四星: {{ pool.rank4Count }} [{{ pool.gachaCount > 0 ? Math.round(pool.rank4Count * 10000 / pool.gachaCount) / 100 + '%' : '0%' }}]</div>
       <div class="w-full text-sm text-blue-600">三星: {{ pool.rank3Count }} [{{ pool.gachaCount > 0 ? Math.round(pool.rank3Count * 10000 / pool.gachaCount) / 100 + '%' : '0%' }}]</div>
       <div class="w-full text-sm text-green-600">平均出金抽数：{{ pool.rank5Count > 0 ? ((pool.gachaCount - pool.storedCount) / pool.rank5Count).toFixed(1) : '无' }}</div>
-      <div class="w-full text-sm text-pink-400">平均出Up抽数：{{ pool.rank5Count - pool.loseCount > 0 ? ((pool.gachaCount - pool.storedCount) / (pool.rank5Count - pool.loseCount)).toFixed(1) : '无' }}</div>
+      <div class="w-full text-sm text-pink-400" v-if="[3, 4, 6, 7].includes(pool.poolType)">平均出Up抽数：{{ pool.rank5Count - pool.loseCount > 0 ? ((pool.gachaCount - pool.storedCount) / (pool.rank5Count - pool.loseCount)).toFixed(1) : '无' }}</div>
       <div class="w-full text-sm text-red-600" v-if="[3, 4, 6, 7].includes(pool.poolType)">歪率: {{ pool.rank5Count > pool.guaranteesCount ? Math.round(pool.loseCount * 10000 / (pool.rank5Count - pool.guaranteesCount)) / 100 + '%' : '0%' }}</div>
     </div>
     <div class="w-full text-sm text-gray-400 flex flex-row justify-between" v-if="pool.recordList">
