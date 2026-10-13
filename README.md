@@ -29,6 +29,8 @@
 
 ## 基本原理
 
+内置更新仅检查 [Dewcat/gf2gacha 的 GitHub Releases](https://github.com/Dewcat/gf2gacha/releases)，并从对应版本下载 `gf2gacha.exe`。尚未发布版本或程序附件尚未上传完成时，不提示更新。推送 `v*` 标签可通过本仓库的 Actions 构建并发布程序，无需原项目的 R2 配置。
+
 本软件通过读取日志获取`游戏路径`、`抽卡链接`、`UID`、`AccessToken`，进而从服务器获取抽卡记录
 
 本软件会在当前目录下的生成名为`gf2gacha.db`的`sqlite`数据库，这就是你的抽卡数据了，你可以使用任何支持sqlite的数据库管理工具查看其内容

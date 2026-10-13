@@ -5,12 +5,20 @@ import (
 	"github.com/inconshreveable/go-update"
 	"github.com/pkg/errors"
 	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
+	"strings"
+	"time"
 )
 
 func UpdateTo(version string) error {
-	resp, err := http.Get(fmt.Sprintf("https://gfl2bucket.mcc.wiki/gf2gacha/%s/gf2gacha.exe", version))
+	downloadURL, err := releaseDownloadURL(version)
+	if err != nil {
+		return err
+	}
+	client := &http.Client{Timeout: 5 * time.Minute}
+	resp, err := client.Get(downloadURL)
 	if err != nil {
 		return err
 	}
@@ -31,6 +39,13 @@ func UpdateTo(version string) error {
 	os.Exit(0)
 
 	return nil
+}
+
+func releaseDownloadURL(version string) (string, error) {
+	if strings.TrimSpace(version) == "" {
+		return "", errors.New("更新版本不能为空")
+	}
+	return fmt.Sprintf("https://github.com/%s/releases/download/%s/gf2gacha.exe", updateRepository, url.PathEscape(version)), nil
 }
 
 func restart() error {

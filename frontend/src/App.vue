@@ -150,7 +150,7 @@ const handleCommunityTasks = () => {
 
 const checkUpdate = () => {
   GetLatestVersion().then(latestVersion => {
-    if (latestVersion != version.value) {
+    if (latestVersion && latestVersion != version.value) {
       ElMessageBox.confirm("有可用的新版本，是否升级", latestVersion, {confirmButtonText: "是", cancelButtonText: "否", type: 'info'}).then(() => {
         const loading = ElLoading.service({lock: true, text: `Update to ${latestVersion}...`, background: 'rgba(0, 0, 0, 0.7)'})
         UpdateTo(latestVersion).catch(err => {
@@ -158,8 +158,10 @@ const checkUpdate = () => {
         }).finally(() => {
           loading.close()
         })
-      })
+      }).catch(() => {})
     }
+  }).catch(err => {
+    console.warn('检查更新失败', err)
   })
 }
 
@@ -242,7 +244,7 @@ onMounted(async () => {
       <div class="flex flex-col gap-4">
         <div class="flex items-center gap-2">
           <div class="w-24 shrink-0">项目地址</div>
-          <div class="grow text-blue-500">https://github.com/MatchaCabin/gf2gacha</div>
+          <div class="grow text-blue-500">https://github.com/Dewcat/gf2gacha</div>
         </div>
         <div class="flex items-center gap-2">
           <div class="w-24 shrink-0">UID</div>
