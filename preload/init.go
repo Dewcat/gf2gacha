@@ -10,10 +10,11 @@ import (
 )
 
 var (
-	LangMap     = make(map[int64]string)
-	ItemMap     = make(map[int64]*pb.ItemDataUnit)
-	UpItemMap   = make(map[int64]int64)
-	ItemRankMap = make(map[int64]map[int64]int64)
+	LangMap           = make(map[int64]string)
+	ItemMap           = make(map[int64]*pb.ItemDataUnit)
+	UpItemMap         = make(map[int64]int64)
+	ItemRankMap       = make(map[int64]map[int64]int64)
+	StandardWeaponMap = make(map[int64]bool)
 
 	PoolTypeMap = make(map[int64]*pb.GachaTypeListDataUnit)
 
@@ -125,6 +126,15 @@ func init() {
 					logger.Logger.Panic(err)
 				}
 				ItemRankMap[unit.Id][weaponId] = rank
+			}
+		}
+
+		// 从常驻池的掉落表提取五星武器，用于自选武器池的歪判定。
+		if unit.Type == 1 {
+			for itemId, rank := range ItemRankMap[unit.Id] {
+				if rank == 5 && ItemMap[itemId].GetType() == 20 {
+					StandardWeaponMap[itemId] = true
+				}
 			}
 		}
 
